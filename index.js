@@ -28,96 +28,6 @@ function isLeap(year) {
   return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }
 
-var helpers = {
-
-  MMMM: function(date) {
-    return MONTH_NAMES[helpers.M(date) - 1];
-  },
-
-  MMM: function(date) {
-    return MONTH_NAMES_ABBR[helpers.M(date) - 1];
-  },
-
-  EEEE: function(date) {
-    return DAY_NAMES[helpers.D(date)];
-  },
-
-  EEE: function(date) {
-    return DAY_NAMES_ABBR[helpers.D(date)];
-  },
-
-  // TODO: 一年中的第几周
-  EE: function(/*date*/) {
-    return '';
-  },
-
-  // TODO: 一月中的第几周
-  E: function(/*date*/) {
-    return '';
-  },
-
-  D: function(date) {
-    return date.getDay();
-  },
-
-  yyyy: function(date) {
-    return date.getFullYear();
-  },
-
-  yy: function(date) {
-    return date.getYear();
-  },
-
-  MM: function(date) {
-    return zeroPad(helpers.M(date));
-  },
-
-  M: function(date) {
-    return date.getMonth() + 1;
-  },
-
-  dd: function(date) {
-    return zeroPad(helpers.d(date));
-  },
-
-  d: function(date) {
-    return date.getDate();
-  },
-
-  hh: function(date) {
-    return zeroPad(helpers.h(date));
-  },
-
-  h: function(date) {
-    return date.getHours();
-  },
-
-  mm: function(date) {
-    return zeroPad(helpers.m(date));
-  },
-
-  m: function(date) {
-    return date.getMinutes();
-  },
-
-  ss: function(date) {
-    return zeroPad(helpers.s(date));
-  },
-
-  s: function(date) {
-    return date.getSeconds();
-  },
-
-  ii: function(date) {
-    return zeroPad(helpers.i(date), 3);
-  },
-
-  i: function(date) {
-    return date.getMilliseconds();
-  }
-
-};
-
 function parseVal(timestamp, pattern) {
   pattern || (pattern = DATETIME_FORMAT);
 
@@ -178,24 +88,142 @@ var DateTime = function(timestamp, pattern) {
   this.pattern = pattern || DATETIME_FORMAT;
 };
 
-DateTime.prototype.toNumber = function() {
-  return this.date.getTime();
-};
+DateTime.prototype = {
 
-DateTime.prototype.toString = function(pattern) {
-  var date = this.date;
+  constructor: DateTime,
 
-  return (pattern || this.pattern).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
-    return ($0 in helpers) ? helpers[$0](date) : '';
-  });
-};
+  MMMM: function() {
+    return MONTH_NAMES[this.M() - 1];
+  },
 
-DateTime.prototype.isLeap = function() {
-  return isLeap(helpers.yyyy(this.date));
-};
+  MMM: function() {
+    return MONTH_NAMES_ABBR[this.M() - 1];
+  },
 
-DateTime.prototype.toDate = function() {
-  return this.date;
+  EEEE: function() {
+    return DAY_NAMES[this.D()];
+  },
+
+  EEE: function() {
+    return DAY_NAMES_ABBR[this.D()];
+  },
+
+  // TODO: 一年中的第几周
+  EE: function() {
+    return '';
+  },
+
+  // TODO: 一月中的第几周
+  E: function() {
+    return '';
+  },
+
+  D: function() {
+    return this.date.getDay();
+  },
+
+  yyyy: function() {
+    return this.date.getFullYear();
+  },
+
+  yy: function() {
+    return this.date.getYear();
+  },
+
+  MM: function() {
+    return zeroPad(this.M());
+  },
+
+  M: function() {
+    return this.date.getMonth() + 1;
+  },
+
+  dd: function() {
+    return zeroPad(this.d());
+  },
+
+  d: function() {
+    return this.date.getDate();
+  },
+
+  hh: function() {
+    return zeroPad(this.h());
+  },
+
+  h: function() {
+    return this.date.getHours();
+  },
+
+  mm: function() {
+    return zeroPad(this.m());
+  },
+
+  m: function() {
+    return this.date.getMinutes();
+  },
+
+  ss: function() {
+    return zeroPad(this.s());
+  },
+
+  s: function() {
+    return this.date.getSeconds();
+  },
+
+  ii: function() {
+    return zeroPad(this.i(), 3);
+  },
+
+  i: function() {
+    return this.date.getMilliseconds();
+  },
+
+  toNumber: function() {
+    return this.date.getTime();
+  },
+
+  toString: function(pattern) {
+    var that = this;
+
+    return (pattern || this.pattern).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
+      return ($0 in that) ? that[$0]() : '';
+    });
+  },
+
+  isLeap: function() {
+    return isLeap(this.yyyy());
+  },
+
+  toDate: function() {
+    return this.date;
+  },
+
+  add: function(unit, distance) {
+    switch (unit) {
+      case 'y':
+        this.date.setFullYear(this.yyyy() + distance);
+        break;
+      case 'M':
+        this.date.setMonth(this.M() + distance);
+        break;
+      case 'd':
+        this.date.setDate(this.d() + distance);
+        break;
+      case 'h':
+        this.date.setHours(this.h() + distance);
+        break;
+      case 'm':
+        this.date.setMinutes(this.m() + distance);
+        break;
+      case 's':
+        this.date.setSeconds(this.s() + distance);
+        break;
+      case 'i':
+        this.date.setMilliseconds(this.i() + distance);
+        break;
+    }
+  }
+
 };
 
 DateTime.prototype.format = DateTime.prototype.toString;

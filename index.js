@@ -16,10 +16,16 @@ function zeroPad(m, n) {
   n || (n = 2);
   m = '' + m;
   n -= m.length;
+
   while (n--) {
     m = '0' + m;
   }
+
   return m;
+}
+
+function isLeap(year) {
+  return ((year % 4 === 0) && (year % 100 !== 0)) || (year % 400 === 0);
 }
 
 var helpers = {
@@ -114,10 +120,6 @@ var helpers = {
 
 function parseVal(timestamp, format) {
   format || (format = DATETIME_FORMAT);
-  // '2015-04-10 14:43:05'
-  // 'yyyy-MM-dd hh:mm:ss'
-  // ["2015", "04", "10", "14", "43", "05"]
-  // ["yyyy", "MM", "dd", "hh", "mm", "ss"]
 
   var tArr = timestamp.split(/\D+/);
   var fArr = format.split(/[^yMdhmsiED]+/);
@@ -172,26 +174,36 @@ function parseDate(timestamp, format) {
 }
 
 var DateTime = function(timestamp, format) {
-  this._date = parseDate(timestamp, format);
-  this._format = format || DATETIME_FORMAT;
+  this._d = parseDate(timestamp, format);
+  this._f = format || DATETIME_FORMAT;
 };
 
-DateTime.prototype.format = function(format) {
-  var date = this._date;
+DateTime.prototype.toNumber = function() {
+  return this._d.getTime();
+};
 
-  return (format || this._format).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
+DateTime.prototype.toString = function(format) {
+  var date = this._d;
+
+  return (format || this._f).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
     return ($0 in helpers) ? helpers[$0](date) : '';
   });
 };
 
-DateTime.prototype.toNumber = function() {
-  return this._date.getTime();
+DateTime.prototype.isLeap = function() {
+  return isLeap(helpers.yyyy(this._d));
 };
 
-DateTime.prototype.toString = function(format) {
-  return this.format(format);
-};
+DateTime.prototype.format = DateTime.prototype.toString;
 
-module.exports = function(timestamp, format) {
+/**
+ * exports
+ */
+
+var datetime = function(timestamp, format) {
   return new DateTime(timestamp, format);
 };
+
+datetime.isLeap = isLeap;
+
+module.exports = datetime;

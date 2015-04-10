@@ -22,6 +22,11 @@ describe('1', function() {
       expect(datetime(ts).format()).to.be(dt)
     })
 
+    it('isLeap', function() {
+      expect(datetime(ts).isLeap()).to.be.ok()
+      expect(datetime.isLeap(1980)).to.be.ok()
+    })
+
     it('week', function() {
       expect(datetime(ts, 'EEEE').format()).to.be('Tuesday')
       expect(datetime(ts, 'EEE').format()).to.be('Tue')
@@ -110,6 +115,11 @@ describe('2', function() {
 
     it('default', function() {
       expect(datetime(ts).format()).to.be(dt)
+    })
+
+    it('isLeap', function() {
+      expect(datetime(ts).isLeap()).to.not.be.ok()
+      expect(datetime.isLeap(2015)).to.not.be.ok()
     })
 
     it('yyyy-MM-dd hh:mm:ss', function() {

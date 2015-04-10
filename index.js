@@ -173,7 +173,7 @@ function parseDate(timestamp, format) {
 
 var DateTime = function(timestamp, format) {
   this._date = parseDate(timestamp, format);
-  this._format = format || 'yyyy-MM-dd hh:mm:ss';
+  this._format = format || DATETIME_FORMAT;
 };
 
 DateTime.prototype.format = function(format) {

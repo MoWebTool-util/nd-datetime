@@ -1,6 +1,6 @@
 # nd-datetime
 
-[![spm version](http://spmjs.io/badge/nd-datetime)](http://spmjs.io/package/nd-datetime)
+[![spm version](http://spm.crossjs.com/badge/nd-datetime)](http://spm.crossjs.com/package/nd-datetime)
 
 > 简单的时间日期转换库
 

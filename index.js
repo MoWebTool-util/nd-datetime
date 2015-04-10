@@ -194,6 +194,10 @@ DateTime.prototype.isLeap = function() {
   return isLeap(helpers.yyyy(this.date));
 };
 
+DateTime.prototype.toDate = function() {
+  return this.date;
+};
+
 DateTime.prototype.format = DateTime.prototype.toString;
 
 /**

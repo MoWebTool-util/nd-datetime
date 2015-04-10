@@ -118,11 +118,11 @@ var helpers = {
 
 };
 
-function parseVal(timestamp, format) {
-  format || (format = DATETIME_FORMAT);
+function parseVal(timestamp, pattern) {
+  pattern || (pattern = DATETIME_FORMAT);
 
   var tArr = timestamp.split(/\D+/);
-  var fArr = format.split(/[^yMdhmsiED]+/);
+  var fArr = pattern.split(/[^yMdhmsiED]+/);
 
   var y, M, d, h, m, s, i;
   var map = {};
@@ -142,9 +142,9 @@ function parseVal(timestamp, format) {
   return new Date(y < 1900 ? y + 1900 : y, M - 1, d, h, m, s, i);
 }
 
-function parseDate(timestamp, format) {
+function parseDate(timestamp, pattern) {
   if (typeof timestamp === 'function') {
-    return timestamp(format);
+    return timestamp(pattern);
   }
 
   if (timestamp) {
@@ -158,7 +158,7 @@ function parseDate(timestamp, format) {
     }
 
     // string
-    return parseVal(timestamp, format);
+    return parseVal(timestamp, pattern);
 
   } else {
 
@@ -173,25 +173,25 @@ function parseDate(timestamp, format) {
   }
 }
 
-var DateTime = function(timestamp, format) {
-  this._d = parseDate(timestamp, format);
-  this._f = format || DATETIME_FORMAT;
+var DateTime = function(timestamp, pattern) {
+  this.date = parseDate(timestamp, pattern);
+  this.pattern = pattern || DATETIME_FORMAT;
 };
 
 DateTime.prototype.toNumber = function() {
-  return this._d.getTime();
+  return this.date.getTime();
 };
 
-DateTime.prototype.toString = function(format) {
-  var date = this._d;
+DateTime.prototype.toString = function(pattern) {
+  var date = this.date;
 
-  return (format || this._f).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
+  return (pattern || this.pattern).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
     return ($0 in helpers) ? helpers[$0](date) : '';
   });
 };
 
 DateTime.prototype.isLeap = function() {
-  return isLeap(helpers.yyyy(this._d));
+  return isLeap(helpers.yyyy(this.date));
 };
 
 DateTime.prototype.format = DateTime.prototype.toString;
@@ -200,8 +200,8 @@ DateTime.prototype.format = DateTime.prototype.toString;
  * exports
  */
 
-var datetime = function(timestamp, format) {
-  return new DateTime(timestamp, format);
+var datetime = function(timestamp, pattern) {
+  return new DateTime(timestamp, pattern);
 };
 
 datetime.isLeap = isLeap;

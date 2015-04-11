@@ -222,6 +222,8 @@ DateTime.prototype = {
         this.date.setMilliseconds(this.i() + distance);
         break;
     }
+
+    return this;
   }
 
 };

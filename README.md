@@ -13,6 +13,6 @@ $ spm install nd-datetime --save
 ## 使用
 
 ```js
-var Datetime = require('nd-datetime');
-// use Datetime
+var datetime = require('nd-datetime');
+// use datetime
 ```

@@ -63,13 +63,18 @@ function parseDate(timestamp, pattern) {
       return timestamp;
     }
 
+    // UNIX TIME
     if (!/\D/.test(timestamp)) {
       return new Date(+timestamp);
     }
 
+    // ISO-8601
+    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}\+\d{4}$/.test(timestamp)) {
+      return new Date(timestamp);
+    }
+
     // string
     return parseVal(timestamp, pattern);
-
   } else {
 
     if (typeof timestamp === 'undefined') {
@@ -79,7 +84,6 @@ function parseDate(timestamp, pattern) {
 
     // 1970-01-01 ...
     return new Date(0);
-
   }
 }
 

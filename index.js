@@ -70,7 +70,8 @@ function parseDate(timestamp, pattern) {
 
     // ISO-8601
     if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}\+\d{4}$/.test(timestamp)) {
-      return new Date(timestamp);
+      // replace for IE
+      return new Date(timestamp.replace(/\+\d{4}$/, 'Z'));
     }
 
     // string

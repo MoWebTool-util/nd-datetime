@@ -69,9 +69,9 @@ function parseDate(timestamp, pattern) {
     }
 
     // ISO-8601
-    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}\+\d{4}$/.test(timestamp)) {
-      // replace for IE
-      return new Date(timestamp.replace(/\+\d{4}$/, 'Z'));
+    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}[+-]\d{4}$/.test(timestamp)) {
+      // replace for IE (IE does not support hhmm but hh:mm)
+      return new Date(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
     }
 
     // string

@@ -64,7 +64,7 @@ function parseDate(timestamp, pattern) {
     }
 
     // UNIX TIME
-    if (!/\D/.test(timestamp)) {
+    if (!/\D/.test(timestamp)||(/^-\d+$/.test(timestamp))) {
       return new Date(+timestamp);
     }
 

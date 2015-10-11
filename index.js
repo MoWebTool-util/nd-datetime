@@ -1,6 +1,6 @@
 /**
- * @module: nd-datetime
- * @author: crossjs <liwenfu@crossjs.com> - 2015-03-02 20:03:53
+ * @module datetime
+ * @author crossjs <liwenfu@crossjs.com>
  */
 
 'use strict';
@@ -88,6 +88,11 @@ function parseDate(timestamp, pattern) {
   }
 }
 
+/**
+ * @class
+ * @param {Date|Number|String} [timestamp] 任意表示时间日期的数据
+ * @param {String} [pattern]   时间格式
+ */
 var DateTime = function(timestamp, pattern) {
   this.date = parseDate(timestamp, pattern);
   this.pattern = pattern || DATETIME_FORMAT;
@@ -97,18 +102,30 @@ DateTime.prototype = {
 
   constructor: DateTime,
 
+  /**
+   * 返回月份名
+   */
   MMMM: function() {
     return MONTH_NAMES[this.M() - 1];
   },
 
+  /**
+   * 返回月份名缩写
+   */
   MMM: function() {
     return MONTH_NAMES_ABBR[this.M() - 1];
   },
 
+  /**
+   * 返回星期名
+   */
   EEEE: function() {
     return DAY_NAMES[this.D()];
   },
 
+  /**
+   * 返回星期名缩写
+   */
   EEE: function() {
     return DAY_NAMES_ABBR[this.D()];
   },
@@ -123,70 +140,124 @@ DateTime.prototype = {
     return '';
   },
 
+  /**
+   * 返回一周中的第几天（0-6）
+   */
   D: function() {
     return this.date.getDay();
   },
 
+  /**
+   * 返回年份，四位数字
+   */
   yyyy: function() {
     return this.date.getFullYear();
   },
 
+  /**
+   * 返回年份，减去1900
+   */
   yy: function() {
     return this.date.getYear();
   },
 
+  /**
+   * 返回月份（01-12）
+   */
   MM: function() {
     return zeroPad(this.M());
   },
 
+  /**
+   * 返回月份（1-12）
+   */
   M: function() {
     return this.date.getMonth() + 1;
   },
 
+  /**
+   * 返回日期（01-31）
+   */
   dd: function() {
     return zeroPad(this.d());
   },
 
+  /**
+   * 返回日期（1-31）
+   */
   d: function() {
     return this.date.getDate();
   },
 
+  /**
+   * 返回小时（00-23）
+   */
   hh: function() {
     return zeroPad(this.h());
   },
 
+  /**
+   * 返回小时（0-23）
+   */
   h: function() {
     return this.date.getHours();
   },
 
+  /**
+   * 返回分钟（00-59）
+   */
   mm: function() {
     return zeroPad(this.m());
   },
 
+  /**
+   * 返回分钟（0-59）
+   */
   m: function() {
     return this.date.getMinutes();
   },
 
+  /**
+   * 返回秒数（00-59）
+   */
   ss: function() {
     return zeroPad(this.s());
   },
 
+  /**
+   * 返回秒数（0-59）
+   */
   s: function() {
     return this.date.getSeconds();
   },
 
+  /**
+   * 返回毫秒数（000-999）
+   */
   ii: function() {
     return zeroPad(this.i(), 3);
   },
 
+  /**
+   * 返回毫秒数（0-999）
+   */
   i: function() {
     return this.date.getMilliseconds();
   },
 
+  /**
+   * 返回时间戳，精确到毫秒
+   * @return {Number}
+   */
   toNumber: function() {
     return this.date.getTime();
   },
 
+  /**
+   * 返回指定格式的字符串
+   * @param  {String} [pattern] 时间格式
+   * @return {String}
+   */
   toString: function(pattern) {
     var that = this;
 
@@ -195,14 +266,28 @@ DateTime.prototype = {
     });
   },
 
+  /**
+   * 返回是否闰年
+   * @return {Boolean}
+   */
   isLeap: function() {
     return isLeap(this.yyyy());
   },
 
+  /**
+   * 返回 Date 对象
+   * @return {Date}
+   */
   toDate: function() {
     return this.date;
   },
 
+  /**
+   * 增加指定数量指定单位的时间
+   * @param {String} unit     年月日时分秒
+   * @param {Number} distance 增加数量
+   * @return {DateTime}
+   */
   add: function(unit, distance) {
     switch (unit) {
       case 'y':
@@ -229,15 +314,18 @@ DateTime.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * 返回指定格式的字符串，同 toString
+   * @param  {String} [pattern] 时间格式
+   * @return {String}
+   */
+  format: function(pattern) {
+    return this.toString(pattern);
   }
 
 };
-
-DateTime.prototype.format = DateTime.prototype.toString;
-
-/**
- * exports
- */
 
 var datetime = function(timestamp, pattern) {
   return new DateTime(timestamp, pattern);

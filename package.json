@@ -16,11 +16,9 @@
     "url": "https://github.com/ndfront/nd-datetime/issues"
   },
   "licenses": "MIT",
-  "devDependencies": {},
   "spm": {
     "main": "index.js",
-    "dependencies": {
-    },
+    "dependencies": {},
     "devDependencies": {
       "expect.js": "0.3.1"
     }

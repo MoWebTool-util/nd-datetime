@@ -261,7 +261,7 @@ DateTime.prototype = {
   toString: function(pattern) {
     var that = this;
 
-    return (pattern || this.pattern).replace(/(y|M|d|h|m|s|i|E|D)+/g, function($0) {
+    return (pattern || this.pattern).replace(/y+|M+|d+|h+|m+|s+|i+|E+|D+/g, function($0) {
       return ($0 in that) ? that[$0]() : '';
     });
   },

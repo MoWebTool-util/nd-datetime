@@ -1,13 +1,15 @@
 # nd-datetime
 
-[![spm version](http://spm.crossjs.com/badge/nd-datetime)](http://spm.crossjs.com/package/nd-datetime)
+[![Travis](https://img.shields.io/travis/ndfront/nd-datetime.svg?style=flat-square)](https://github.com/ndfront/nd-datetime)
+[![Coveralls](https://img.shields.io/coveralls/ndfront/nd-datetime.svg?style=flat-square)](https://github.com/ndfront/nd-datetime)
+[![NPM version](https://img.shields.io/npm/v/nd-datetime.svg?style=flat-square)](https://npmjs.org/package/nd-datetime)
 
 > 简单的时间日期转换库
 
 ## 安装
 
 ```bash
-$ spm install nd-datetime --save
+$ npm install nd-datetime --save
 ```
 
 ## 使用

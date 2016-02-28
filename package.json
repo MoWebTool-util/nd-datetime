@@ -9,8 +9,7 @@
     "email": "liwenfu@crossjs.com"
   },
   "scripts": {
-    "test": "./node_modules/karma/bin/karma start ./karma.conf.js",
-    "coverage": "cat coverage/*/lcov.info | codecov"
+    "test": "./node_modules/karma/bin/karma start ./karma.conf.js"
   },
   "repository": {
     "type": "git",
@@ -24,7 +23,6 @@
   "dependencies": {},
   "devDependencies": {
     "chai": "^3.5.0",
-    "codecov": "^1.0.1",
     "isparta-loader": "^2.0.0",
     "karma": "^0.13.8",
     "karma-coverage": "^0.5.0",

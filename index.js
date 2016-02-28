@@ -64,11 +64,12 @@ function parseDate(timestamp, pattern) {
     }
 
     // UNIX TIME
-    if (!/\D/.test(timestamp)||(/^-\d+$/.test(timestamp))) {
+    if (/^-?\d+$/.test(timestamp)) {
       return new Date(+timestamp);
     }
 
     // ISO-8601
+    // 2015-04-22T02:32:27.068+0000
     if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}[+-]\d{4}$/.test(timestamp)) {
       // replace for IE (IE does not support hhmm but hh:mm)
       return new Date(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
@@ -246,40 +247,11 @@ DateTime.prototype = {
   },
 
   /**
-   * 返回时间戳，精确到毫秒
-   * @return {Number}
-   */
-  toNumber: function() {
-    return this.date.getTime();
-  },
-
-  /**
-   * 返回指定格式的字符串
-   * @param  {String} [pattern] 时间格式
-   * @return {String}
-   */
-  toString: function(pattern) {
-    var that = this;
-
-    return (pattern || this.pattern).replace(/y+|M+|d+|h+|m+|s+|i+|E+|D+/g, function($0) {
-      return ($0 in that) ? that[$0]() : '';
-    });
-  },
-
-  /**
    * 返回是否闰年
    * @return {Boolean}
    */
   isLeap: function() {
     return isLeap(this.yyyy());
-  },
-
-  /**
-   * 返回 Date 对象
-   * @return {Date}
-   */
-  toDate: function() {
-    return this.date;
   },
 
   /**
@@ -294,7 +266,7 @@ DateTime.prototype = {
         this.date.setFullYear(this.yyyy() + distance);
         break;
       case 'M':
-        this.date.setMonth(this.M() + distance);
+        this.date.setMonth(this.M() + distance - 1);
         break;
       case 'd':
         this.date.setDate(this.d() + distance);
@@ -323,6 +295,35 @@ DateTime.prototype = {
    */
   format: function(pattern) {
     return this.toString(pattern);
+  },
+
+  /**
+   * 返回 Date 对象
+   * @return {Date}
+   */
+  toDate: function() {
+    return this.date;
+  },
+
+  /**
+   * 返回时间戳，精确到毫秒
+   * @return {Number}
+   */
+  toNumber: function() {
+    return this.date.getTime();
+  },
+
+  /**
+   * 返回指定格式的字符串
+   * @param  {String} [pattern] 时间格式
+   * @return {String}
+   */
+  toString: function(pattern) {
+    var that = this;
+
+    return (pattern || this.pattern).replace(/y+|M+|d+|h+|m+|s+|i+|E+|D+/g, function($0) {
+      return that[$0]()
+    });
   }
 
 };

@@ -12,6 +12,8 @@ var DAY_NAMES_ABBR = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 var DATETIME_FORMAT = 'yyyy-MM-dd hh:mm:ss';
 
+var datetime;
+
 function zeroPad(m, n) {
   n || (n = 2);
   m = '' + m;
@@ -96,6 +98,8 @@ function parseDate(timestamp, pattern) {
  */
 var DateTime = function(timestamp, pattern) {
   this.date = parseDate(timestamp, pattern);
+  this._zone = this.date.getTimezoneOffset();
+  this._offset = this._zone - new Date().getTimezoneOffset();
   this.pattern = pattern || DATETIME_FORMAT;
 };
 
@@ -107,28 +111,28 @@ DateTime.prototype = {
    * 返回月份名
    */
   MMMM: function() {
-    return MONTH_NAMES[this.M() - 1];
+    return datetime.MONTH_NAMES[this.M() - 1];
   },
 
   /**
    * 返回月份名缩写
    */
   MMM: function() {
-    return MONTH_NAMES_ABBR[this.M() - 1];
+    return datetime.MONTH_NAMES_ABBR[this.M() - 1];
   },
 
   /**
    * 返回星期名
    */
   EEEE: function() {
-    return DAY_NAMES[this.D()];
+    return datetime.DAY_NAMES[this.D()];
   },
 
   /**
    * 返回星期名缩写
    */
   EEE: function() {
-    return DAY_NAMES_ABBR[this.D()];
+    return datetime.DAY_NAMES_ABBR[this.D()];
   },
 
   // TODO: 一年中的第几周
@@ -247,6 +251,20 @@ DateTime.prototype = {
   },
 
   /**
+   * 返回时差（相对 UTC）
+   */
+  zone: function() {
+    return this._zone;
+  },
+
+  /**
+   * 返回时差（相对当前）
+   */
+  offset: function() {
+    return this._offset;
+  },
+
+  /**
    * 返回是否闰年
    * @return {Boolean}
    */
@@ -263,25 +281,25 @@ DateTime.prototype = {
   add: function(unit, distance) {
     switch (unit) {
       case 'y':
-        this.date.setFullYear(this.yyyy() + distance);
+        this.date.setFullYear(+this.yyyy() + distance);
         break;
       case 'M':
-        this.date.setMonth(this.M() + distance - 1);
+        this.date.setMonth(+this.M() + distance - 1);
         break;
       case 'd':
-        this.date.setDate(this.d() + distance);
+        this.date.setDate(+this.d() + distance);
         break;
       case 'h':
-        this.date.setHours(this.h() + distance);
+        this.date.setHours(+this.h() + distance);
         break;
       case 'm':
-        this.date.setMinutes(this.m() + distance);
+        this.date.setMinutes(+this.m() + distance);
         break;
       case 's':
-        this.date.setSeconds(this.s() + distance);
+        this.date.setSeconds(+this.s() + distance);
         break;
       case 'i':
-        this.date.setMilliseconds(this.i() + distance);
+        this.date.setMilliseconds(+this.i() + distance);
         break;
     }
 
@@ -328,10 +346,15 @@ DateTime.prototype = {
 
 };
 
-var datetime = function(timestamp, pattern) {
+datetime = function(timestamp, pattern) {
   return new DateTime(timestamp, pattern);
 };
 
 datetime.isLeap = isLeap;
+
+datetime.MONTH_NAMES = MONTH_NAMES;
+datetime.MONTH_NAMES_ABBR = MONTH_NAMES_ABBR;
+datetime.DAY_NAMES = DAY_NAMES;
+datetime.DAY_NAMES_ABBR = DAY_NAMES_ABBR;
 
 module.exports = datetime;

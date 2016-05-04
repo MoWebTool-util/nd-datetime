@@ -45,7 +45,7 @@ function parseVal(timestamp, pattern) {
 
   y = map.yyyy || map.yy || 1970;
   M = map.MM || map.M || 0;
-  d = map.dd || map.d || 1;
+  d = map.dd || map.d || 0;
   h = map.hh || map.h || 0;
   m = map.mm || map.m || 0;
   s = map.ss || map.s || 0;

@@ -3,8 +3,6 @@
 var expect = require('chai').expect
 var datetime = require('../index')
 
-var MONTH_NAMES = datetime.MONTH_NAMES
-var MONTH_NAMES_ABBR = datetime.MONTH_NAMES_ABBR
 var DAY_NAMES = datetime.DAY_NAMES
 var DAY_NAMES_ABBR = datetime.DAY_NAMES_ABBR
 
@@ -23,6 +21,12 @@ function zeroPad(m, n) {
 /*globals describe, it*/
 
 describe('parse', function() {
+
+  describe('date', function() {
+    it('is 00', function() {
+      expect(datetime('2016-05-00').d()).to.equal(30)
+    })
+  })
 
   describe('1970', function() {
     var fmt = 'yyyy'

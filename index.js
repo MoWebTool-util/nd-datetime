@@ -74,7 +74,7 @@ function parseDate(timestamp, pattern) {
     // 2015-04-22T02:32:27.068+0000
     if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}[+-]\d{4}$/.test(timestamp)) {
       // replace for IE (IE does not support hhmm but hh:mm)
-      return new Date(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
+      return Date.fromISO(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
     }
 
     // string
@@ -356,5 +356,49 @@ datetime.MONTH_NAMES = MONTH_NAMES;
 datetime.MONTH_NAMES_ABBR = MONTH_NAMES_ABBR;
 datetime.DAY_NAMES = DAY_NAMES;
 datetime.DAY_NAMES_ABBR = DAY_NAMES_ABBR;
+
+// compatible with ie8
+// iso-8601
+(function() {
+  var D= new Date('2011-06-02T09:34:29+02:00');
+  if(!D || +D!== 1307000069000){
+    Date.fromISO= function(s){
+      var day;
+      var tz;
+      var rx = /^(\d{4}\-\d\d\-\d\d([tT ][\d:\.]*)?)([zZ]|([+\-])(\d\d):(\d\d))?$/;
+      var p = rx.exec(s) || [];
+      if(p[1]){
+        day = p[1].split(/\D/);
+        for(var i= 0, L= day.length; i<L; i++){
+          day[i] = parseInt(day[i], 10) || 0;
+        }
+        day[1] -= 1;
+        day= new Date(Date.UTC.apply(Date, day));
+        if(!day.getDate()) {
+          return NaN;
+        }
+        if(p[5]){
+          tz = (parseInt(p[5], 10)*60);
+          if(p[6]) {
+            tz += parseInt(p[6], 10);
+          }
+          if(p[4] === '+') {
+            tz *= -1;
+          }
+          if(tz) {
+            day.setUTCMinutes(day.getUTCMinutes()+ tz);
+          }
+        }
+        return day;
+      }
+      return NaN;
+    }
+  }
+  else{
+    Date.fromISO= function(s){
+      return new Date(s);
+    }
+  }
+})()
 
 module.exports = datetime;

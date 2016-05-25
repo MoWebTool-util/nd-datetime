@@ -45,7 +45,12 @@ function parseVal(timestamp, pattern) {
 
   y = map.yyyy || map.yy || 1970;
   M = map.MM || map.M || 0;
-  d = map.dd || map.d || 0;
+  // d = map.dd || map.d || 0;
+  if(map.dd === 0 || map.d === 0) {
+    d = 0
+  }else {
+    d = map.dd || map.d || 1;
+  }
   h = map.hh || map.h || 0;
   m = map.mm || map.m || 0;
   s = map.ss || map.s || 0;
@@ -360,8 +365,8 @@ datetime.DAY_NAMES_ABBR = DAY_NAMES_ABBR;
 // compatible with ie8
 // iso-8601
 (function() {
-  var D= new Date('2011-06-02T09:34:29+02:00');
-  if(!D || +D!== 1307000069000){
+  var D= new Date('1970-01-01T00:01:01+00:01');
+  if(!D || +D!== 1000){
     Date.fromISO= function(s){
       var day;
       var tz;

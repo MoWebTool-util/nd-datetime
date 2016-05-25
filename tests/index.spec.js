@@ -76,6 +76,30 @@ describe('format', function() {
     it('115-04-22 is 2015-04-22', function() {
       expect(datetime('115-04-22', 'yyyy-MM-dd').format()).to.equal('2015-04-22')
     })
+
+    it('2015-04-00 is 2015-03-31', function() {
+      expect(datetime('2015-04-00', 'yyyy-MM-dd').format()).to.equal('2015-03-31')
+    })
+
+    it('2015-04-0 is 2015-03-31', function() {
+      expect(datetime('2015-04-0', 'yyyy-MM-dd').format()).to.equal('2015-03-31')
+    })
+
+    it('2015-04-1 is 2015-04-01', function() {
+      expect(datetime('2015-04-1', 'yyyy-MM-dd').format()).to.equal('2015-04-01')
+    })
+
+    it('2015-00-01 is 2014-12-01', function() {
+      expect(datetime('2015-00-01', 'yyyy-MM-dd').format()).to.equal('2014-12-01')
+    })
+
+    it('2015-0-01 is 2014-12-01', function() {
+      expect(datetime('2015-0-01', 'yyyy-MM-dd').format()).to.equal('2014-12-01')
+    })
+
+    it('2015-18-01 is 2016-06-01', function() {
+      expect(datetime('2015-18-01', 'yyyy-MM-dd').format()).to.equal('2016-06-01')
+    })
   })
 
   describe('1', function() {
@@ -98,6 +122,7 @@ describe('format', function() {
       it('isLeap', function() {
         expect(datetime(ts).isLeap()).to.equal(true)
         expect(datetime.isLeap(1980)).to.equal(true)
+        expect(datetime.isLeap(2000)).to.equal(true)
       })
 
       it('week', function() {
@@ -105,6 +130,8 @@ describe('format', function() {
         var index = inst.zone() <= -360 ? 2 : 1
         expect(inst.format('EEEE')).to.equal(DAY_NAMES[index])
         expect(inst.format('EEE')).to.equal(DAY_NAMES_ABBR[index])
+        expect(inst.format('EE')).to.equal('')
+        expect(inst.format('E')).to.equal('')
         expect(inst.format('D')).to.equal('' + index)
       })
 

@@ -19,6 +19,6 @@ var datetime = require('nd-datetime');
 // use datetime
 console.log(datetime().format())
 console.log(datetime(1444553026337).format())
-console.log(datetime(1444553026337).format(yyyy-MM-dd hh:mm:ss.ii))
+console.log(datetime(1444553026337).format('yyyy-MM-dd hh:mm:ss.ii'))
 // see more examples in tests/
 ```

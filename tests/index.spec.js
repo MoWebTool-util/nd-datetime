@@ -61,6 +61,23 @@ describe('parse', function() {
       })
       expect(inst.add('m', inst.zone()).format()).to.equal(res)
     })
+
+  })
+  describe('zone', function() {
+    var date = datetime('2016-06-15T17:47:21', 'yyyy-MM-dd hh:mm:ss')
+    var dateAddZone = datetime('2016-06-15T17:47:21', 'yyyy-MM-dd hh:mm:ss').add('m',-date.zone())
+    it('2016-06-15T17:47:21Z  is 2016-06-15T17:47:21 add -zone()', function() {
+      expect(datetime('2016-06-15T17:47:21Z', 'yyyy-MM-dd hh:mm:ss').format()).to.equal(dateAddZone.format())
+    })
+
+    it('2016-06-15T17:47:21+00:00  is 2016-06-15T17:47:21 add -zone()', function() {
+      expect(datetime('2016-06-15T17:47:21+00:00', 'yyyy-MM-dd hh:mm:ss').format()).to.equal(dateAddZone.format())
+    })
+
+    it('2016-06-15T17:47:21+0000 is 2016-06-15T17:47:21 add -zone()', function() {
+      expect(datetime('2016-06-15T17:47:21+0000', 'yyyy-MM-dd hh:mm:ss').format()).to.equal(dateAddZone.format())
+    })
+
   })
 
 })
@@ -100,6 +117,7 @@ describe('format', function() {
     it('2015-18-01 is 2016-06-01', function() {
       expect(datetime('2015-18-01', 'yyyy-MM-dd').format()).to.equal('2016-06-01')
     })
+
   })
 
   describe('1', function() {

@@ -77,9 +77,19 @@ function parseDate(timestamp, pattern) {
 
     // ISO-8601
     // 2015-04-22T02:32:27.068+0000
-    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}[+-]\d{4}$/.test(timestamp)) {
-      // replace for IE (IE does not support hhmm but hh:mm)
+    // if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}\.\d{3}[+-]\d{4}$/.test(timestamp)) {
+    //   // replace for IE (IE does not support hhmm but hh:mm)
+    //   return Date.fromISO(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
+    // }
+
+    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}(\.\d{3})?[+-]\d{4}$/.test(timestamp)) {
       return Date.fromISO(timestamp.replace(/([+-]\d{2})(\d{2})/, '$1:$2'));
+    }
+    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}(\.\d{3})?[+-]\d{2}:\d{2}$/.test(timestamp)) {
+      return Date.fromISO(timestamp);
+    }
+    if (/^\d{4}(\-\d{2}){2}T\d{2}(:\d{2}){2}(\.\d{3})?[zZ]$/.test(timestamp)) {
+      return Date.fromISO(timestamp.replace(/[zZ]/, '+00:00'));
     }
 
     // string
